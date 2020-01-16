@@ -7,6 +7,7 @@ If you wanna create a kafka MVP quickly, go to [Kafka compose file](https://gith
 # Supported tags and respective Dockerfile links
 
 * [`latest` (latest/Dockerfile)](https://github.com/yeasy/docker-kafka/blob/master/Dockerfile): Tracking latest release.
+* [`2.13-2.4.0` (2.13-2.4.0/Dockerfile)](https://github.com/yeasy/docker-kafka/blob/master/v2.13-2.4.0/Dockerfile): Build for the 2.13-2.4.0 release.
 * [`0.11.0.1` (0.11.0.1/Dockerfile)](https://github.com/yeasy/docker-kafka/blob/master/v0.11.0.1/Dockerfile): Build for the 0.11.0.1 release.
 
 For more information about this image and its history, please see the relevant manifest file in the [`yeasy/docker-kafka` GitHub repo](https://github.com/yeasy/docker-kafka).
