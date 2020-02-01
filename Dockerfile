@@ -36,10 +36,8 @@ WORKDIR $KAFKA_HOME
 # Start a zk service for the kafka to use
 #CMD ["bash", "/tmp/start_zk.sh"]
 
-RUN mkdir -p /u01/bin/
-
-COPY healthcheck.sh /u01/bin/
-
+#RUN mkdir -p /u01/bin/
+#COPY healthcheck.sh /u01/bin/
 #HEALTHCHECK --interval=5m --timeout=3s CMD sh /u01/bin/healthcheck.sh
 
 # Start a kafka service
