@@ -21,17 +21,13 @@ RUN wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz \
         && tar xzf ${KAFKA_PKG}.tgz -C /opt \
         && mv /opt/${KAFKA_PKG} ${KAFKA_HOME}
 
+ENV ZK_VERSION=3.5.6
 # zk config is at /opt/zookeeper/conf/zoo.cfg
 # Only for testing, as kafka already include a zookeeper
-RUN wget http://www.trieuvan.com/apache/zookeeper/zookeeper-3.5.6/apache-zookeeper-3.5.6-bin.tar.gz \
-        && tar xzf apache-zookeeper-3.5.6-bin.tar.gz -C /opt \
-        && mv /opt/apache-zookeeper-3.5.6-bin /opt/zookeeper \
-        && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg
-
-#RUN rm -rf /opt/zookeeper/lib
-
-#COPY zookeeper-3.5.6-old/lib /opt/zookeeper/lib
-#COPY zookeeper-3.5.6-old/conf/log4j.properties /opt/zookeeper/conf/log4j.properties
+RUN wget http://www.trieuvan.com/apache/zookeeper/zookeeper-${ZK_VERSION}/apache-zookeeper-${ZK_VERSION}-bin.tar.gz \
+        && tar xzf apache-zookeeper-${ZK_VERSION}-bin.tar.gz -C /opt \
+        && mv /opt/apache-zookeeper-${ZK_VERSION}-bin /opt/zookeeper \
+        cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg
 
 COPY scripts/* /tmp/
 
@@ -40,5 +36,11 @@ WORKDIR $KAFKA_HOME
 # Start a zk service for the kafka to use
 #CMD ["bash", "/tmp/start_zk.sh"]
 
+RUN mkdir -p /u01/bin/
+
+COPY healthcheck.sh /u01/bin/
+
 # Start a kafka service
-CMD ["bash", "/tmp/start_kafka.sh"]
+HEALTHCHECK --interval=5m --timeout=3s CMD sh /u01/bin/healthcheck.sh
+
+CMD ["bash", "/tmp/start_zk.sh"]
