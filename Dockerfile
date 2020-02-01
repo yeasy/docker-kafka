@@ -40,7 +40,7 @@ RUN mkdir -p /u01/bin/
 
 COPY healthcheck.sh /u01/bin/
 
-# Start a kafka service
-HEALTHCHECK --interval=5m --timeout=3s CMD sh /u01/bin/healthcheck.sh
+#HEALTHCHECK --interval=5m --timeout=3s CMD sh /u01/bin/healthcheck.sh
 
+# Start a kafka service
 CMD ["bash", "/tmp/start_zk.sh"]
