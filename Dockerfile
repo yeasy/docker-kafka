@@ -16,20 +16,11 @@ ENV KAFKA_PKG=kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 ENV KAFKA_HOME=/opt/kafka
 ENV PATH=$PATH:${KAFKA_HOME}/bin
 
-# kafka config is at /opt/kafka/config/server.properties
+RUN wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz \
 RUN cd /opt \
 		&& wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz \
         && tar xzf ${KAFKA_PKG}.tgz -C /opt \
         && mv /opt/${KAFKA_PKG} ${KAFKA_HOME}
-
-ENV ZK_VERSION=3.5.6
-# zk config is at /opt/zookeeper/conf/zoo.cfg
-# Only for testing, as kafka already include a zookeeper
-RUN cd /opt \
-		&& wget http://www.trieuvan.com/apache/zookeeper/zookeeper-${ZK_VERSION}/apache-zookeeper-${ZK_VERSION}-bin.tar.gz \
-        && tar xzf apache-zookeeper-${ZK_VERSION}-bin.tar.gz -C /opt \
-        && mv /opt/apache-zookeeper-${ZK_VERSION}-bin /opt/zookeeper \
-        && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg
 
 COPY scripts/* /tmp/
 
