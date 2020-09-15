@@ -8,3 +8,5 @@ TOPIC_NAME=${1:-test}
 echo "Create a topic ${TOPIC_NAME} by connecting to ${ZK_HOST} with 1 replica and 1 partition"
 
 bin/kafka-topics.sh --create --zookeeper ${ZK_HOST}:2181 --replication-factor 1 --partitions 1 --topic ${TOPIC_NAME}
+
+# bin/kafka-topics.sh --delete --zookeeper ${ZK_HOST}:2181 --topic ${TOPIC_NAME}
