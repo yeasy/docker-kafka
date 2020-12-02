@@ -4,7 +4,7 @@
 
 echo "Update configurations"
 echo "Setting zk addr"
-sed -i "s/zookeeper.connect=localhost:2181/zookeeper.connect=zookeeper:2181/" config/server.properties
+sed -i "s/zookeeper.connect=localhost:2181/zookeeper.connect=${ZK_URL}/" config/server.properties
 echo "Disable log retention"
 sed -i "s/log.retention.hours=168/log.retention.hours=-1/" config/server.properties
 echo "Set broker id from env"
