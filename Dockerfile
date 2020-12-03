@@ -16,7 +16,7 @@ ENV KAFKA_PKG=kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 ENV KAFKA_HOME=/opt/kafka
 ENV PATH=$PATH:${KAFKA_HOME}/bin
 
-RUN wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz \
+RUN wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz
 RUN cd /opt \
 		&& wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz \
         && tar xzf ${KAFKA_PKG}.tgz -C /opt \
