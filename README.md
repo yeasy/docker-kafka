@@ -7,6 +7,7 @@ If you wanna create a kafka MVP quickly, go to [Kafka compose file](https://gith
 # Supported tags and respective Dockerfile links
 
 * [`latest` (latest/Dockerfile)](https://github.com/yeasy/docker-kafka/blob/master/Dockerfile): Tracking latest release.
+* [`2.13-4.2.0` (2.13-4.2.0/Dockerfile)](https://github.com/yeasy/docker-kafka/blob/master/2.13-4.2.0/Dockerfile): Build for the 4.2.0 release.
 * [`2.13-2.4.0` (2.13-2.4.0/Dockerfile)](https://github.com/yeasy/docker-kafka/blob/master/v2.13-2.4.0/Dockerfile): Build for the 2.13-2.4.0 release.
 * [`0.11.0.1` (0.11.0.1/Dockerfile)](https://github.com/yeasy/docker-kafka/blob/master/v0.11.0.1/Dockerfile): Build for the 0.11.0.1 release.
 
@@ -14,6 +15,8 @@ For more information about this image and its history, please see the relevant m
 
 # What is docker-kafka?
 Docker image with kafka.
+
+`latest` now runs Kafka in KRaft mode (no ZooKeeper dependency), which is required for Kafka 4.x.
 
 # How to use this image?
 The docker image is auto built at [https://registry.hub.docker.com/u/yeasy/kafka/](https://registry.hub.docker.com/u/yeasy/kafka/).
@@ -28,8 +31,17 @@ FROM yeasy/kafka:latest
 $ docker run yeasy/kafka
 ```
 
+To set advertised listeners in Docker:
+
+```sh
+docker run -d \
+  -p 9092:9092 \
+  -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 \
+  yeasy/kafka:latest
+```
+
 # Which image is based on?
-The image is built based on [anapsix/alpine-java](https://hub.docker.com/r/anapsix/alpine-java) image.
+The image is built based on [eclipse-temurin:21-jre-jammy](https://hub.docker.com/_/eclipse-temurin).
 
 # What has been changed?
 ## Install kafka

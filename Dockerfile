@@ -1,37 +1,28 @@
-# Kafka image
-# github.com/yeasy/docker-kafka
+FROM eclipse-temurin:21-jre-jammy
+LABEL maintainer="yeasy@github.com"
 
-# KAFKA_HOME=/opt/kafka
-# Add $KAFKA_HOME/bin to the $PATH.
-# workdir is set to $KAFKA_HOME
-
-FROM anapsix/alpine-java:8
-
-MAINTAINER <yeasy@github.com>
-
-ENV KAFKA_VERSION=2.4.0 \
-    SCALA_VERSION=2.13
-
+ENV KAFKA_VERSION=4.2.0 \
+    SCALA_VERSION=2.13 \
+    KAFKA_HOME=/opt/kafka
 ENV KAFKA_PKG=kafka_${SCALA_VERSION}-${KAFKA_VERSION}
-ENV KAFKA_HOME=/opt/kafka
-ENV PATH=$PATH:${KAFKA_HOME}/bin
+ENV PATH=${PATH}:${KAFKA_HOME}/bin
 
-RUN wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz
-RUN cd /opt \
-		&& wget http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz \
-        && tar xzf ${KAFKA_PKG}.tgz -C /opt \
-        && mv /opt/${KAFKA_PKG} ${KAFKA_HOME}
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends bash ca-certificates wget netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/* \
+    && cd /opt \
+    && wget -q "https://downloads.apache.org/kafka/${KAFKA_VERSION}/${KAFKA_PKG}.tgz" \
+    && tar xzf "${KAFKA_PKG}.tgz" \
+    && mv "/opt/${KAFKA_PKG}" "${KAFKA_HOME}" \
+    && rm -f "${KAFKA_PKG}.tgz"
 
 COPY scripts/* /tmp/
 
-WORKDIR $KAFKA_HOME
+WORKDIR ${KAFKA_HOME}
 
-# can call your customized command here
-HEALTHCHECK --interval=5m --timeout=3s --start-period=1s --retries=3 \
- CMD exit 0
+EXPOSE 9092
+EXPOSE 9093
 
-# Start a zk service for the kafka to use
-#CMD ["bash", "/tmp/start_zk.sh"]
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD ["/tmp/healthcheck.sh"]
 
-# Start a kafka service
 CMD ["bash", "/tmp/start_kafka.sh"]
